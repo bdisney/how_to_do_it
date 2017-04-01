@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create]
 
   def index
     @questions = Question.all
@@ -16,7 +17,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
 
     if @question.save
-      redirect_to @question, notice: 'Вопрос создан.'
+      redirect_to @question, notice: 'Answer was successfully added.'
     else
       render :new
     end
