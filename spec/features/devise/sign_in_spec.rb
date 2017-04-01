@@ -8,6 +8,11 @@ feature 'User sign in', %q{
 
   given(:user) { create(:user) }
 
+  background do
+    visit root_path
+    within('.navbar') { click_on 'Log In' }
+  end
+
   scenario 'Registered user try to sign in' do
     sign_in(user)
 
