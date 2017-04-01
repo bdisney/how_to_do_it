@@ -3,12 +3,16 @@ h1= @question.title
 .question-body
   = @question.body
 
+hr
+h4 Answers:
+
 - if @question.answers.present?
-  h2 Ответы
   .answers-list
     - @question.answers.each do |answer|
       .answer
         = answer.body
+- else
+  p class="empty-text" There is no answers yet.
 
 p class="clearfix"
   = link_to 'Add answer', new_question_answer_path(@question), class: 'btn btn-primary btn-lg pull-left', role: 'button'
