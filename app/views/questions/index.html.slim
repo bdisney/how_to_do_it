@@ -1,7 +1,7 @@
-h1 Все вопросы
+h1 List of Questions
 .row
   .col-sm-12
-    = link_to 'Спросить', new_question_path, class: 'btn btn-primary btn-lg pull-right', role: 'button'
+    = link_to 'Add question', new_question_path, class: 'btn btn-primary btn-lg pull-right', role: 'button'
 
 .questions-list
   = render @questions
