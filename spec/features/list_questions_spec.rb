@@ -8,7 +8,7 @@ feature 'List questions', %q{
 
   given!(:questions) { create_list(:question, 5) }
 
-  scenari 'User views the list of questions' do
+  scenario 'User views the list of questions' do
     visit questions_path
     expect(page).to have_selector '.questions-list'
 
