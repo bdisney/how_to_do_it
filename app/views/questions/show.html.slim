@@ -1,3 +1,11 @@
+.row
+  .col-sm-12
+    - if user_signed_in? && @question.user == current_user
+      = link_to 'Delete', @question, method: :delete, class: 'btn btn-danger btn-sm pull-right',
+              id: 'delete-question-btn', role: 'button'
+    = link_to 'Add answer', new_question_answer_path(@question), class: 'btn btn-primary btn-sm pull-right', role: 'button'
+
+
 h1= @question.title
 
 .question-body
@@ -14,5 +22,4 @@ h4 Answers:
 - else
   p class="empty-text" There is no answers yet.
 
-p class="clearfix"
-  = link_to 'Add answer', new_question_answer_path(@question), class: 'btn btn-primary btn-lg pull-left', role: 'button'
+
