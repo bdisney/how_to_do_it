@@ -8,6 +8,7 @@ gem 'pg'
 
 gem 'slim-rails'
 gem 'bootstrap-sass', '~>3.3'
+gem 'devise'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
@@ -45,6 +46,7 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
+  gem 'launchy'
 end
 
 group :development do
