@@ -1,0 +1,10 @@
+= render 'shared/errors_messages', resource: @answer
+
+.row
+  .col-lg-6.col-md-8.col-sm-12
+    = form_for [@question, @answer] do |f|
+      .form-group
+        = f.label :body
+        = f.text_area :body, class: 'form-control'
+      div
+        = f.submit 'Ответить', class: 'btn btn-primary'
