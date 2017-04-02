@@ -25,7 +25,7 @@ RSpec.describe AnswersController, type: :controller do
             .to change(question.answers, :count).by(1)
       end
 
-      it 'redirects to question' do
+      it 'redirects to related question' do
         process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question }
         expect(response).to redirect_to question
       end
@@ -43,4 +43,37 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    sign_in_user
+  
+    context 'delete by author' do
+      let!(:answer) { create(:answer, user: @user) }
+  
+      it 'deletes answer from db' do
+        expect { process :destroy, method: :delete, params: { id: answer.id } }
+            .to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to related question page' do
+        process :destroy, method: :delete, params: { id: answer.id }
+        expect(response).to redirect_to question_path(answer.question)
+      end
+    end
+
+    context 'delete by someone else' do
+      let!(:answer) { create(:answer, user: create(:user)) }
+
+      it 'does not delete answer from db' do
+        expect { process :destroy, method: :delete, params: { id: answer.id } }
+            .to_not change(Answer, :count)
+      end
+
+      it 'redirects to related question page' do
+        process :destroy, method: :delete, params: { id: answer.id }
+        expect(response).to redirect_to question_path(answer.question)
+      end
+    end
+
+  end  
 end
