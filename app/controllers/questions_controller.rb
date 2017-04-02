@@ -36,7 +36,7 @@ class QuestionsController < ApplicationController
   end
 
   def check_authority
-    redirect_to questions_path, alert: 'Permission denied!' unless @question.user == current_user
+    redirect_to questions_path, alert: 'Permission denied!' unless current_user.author_of?(@question)
   end
 
   def question_params
