@@ -8,6 +8,7 @@ gem 'pg'
 
 gem 'slim-rails'
 gem 'bootstrap-sass', '~>3.3'
+gem 'font-awesome-rails'
 gem 'devise'
 
 # Use Puma as the app server
