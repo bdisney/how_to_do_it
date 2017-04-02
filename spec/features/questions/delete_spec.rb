@@ -12,11 +12,14 @@ feature 'Author can delete question', %q{
   scenario 'Author of question deletes it' do
     sign_in(user)
     visit question_path(question)
-    expect(page).to have_selector '#delete-question-btn'
-    find('#delete-question-btn').click
+    within '.button-bar' do
+      expect(page).to have_link 'Delete'
+      click_on 'Delete'
+    end
 
     expect(current_path).to eq questions_path
-    expect(page).to have_content 'Question was successfully deleted.'
+    expect(page).to_not have_content question.title
+    expect(page).to_not have_content question.body
   end
 
   scenario 'User tries to delete question of another user' do
@@ -24,13 +27,17 @@ feature 'Author can delete question', %q{
     someones_question = create(:question)
     visit question_path(someones_question)
 
-    expect(page).to_not have_selector '#delete-question-btn'
+    within '.button-bar' do
+      expect(page).to_not have_link 'Delete'
+    end
   end
 
   scenario 'Non-authenticated user tries to delete question' do
     visit question_path(question)
 
-    expect(page).to_not have_selector '#delete-question-btn'
+    within '.button-bar' do
+      expect(page).to_not have_link 'Delete'
+    end
   end
 
 end

@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :question do
-    title "Hello world!"
-    body "My question body"
+    sequence(:title) { |n| "question_title_#{n}" }
+    sequence(:body) { |n| "question_body_#{n}" }
     user
 
     factory :question_with_answers do

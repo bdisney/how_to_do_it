@@ -8,33 +8,29 @@ feature 'Author can delete answers', %q{
 
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:answer) { create(:answer, question: question, user: user) }
-
-  background do
-      @delete_link = "a[data-answer-id=\"#{answer.id}\"]"
-    end
+  given!(:answer) { create(:answer, question: question, user: user) }
 
   scenario 'Author of answer deletes it' do
     sign_in(user)
     visit question_path(question)
-    expect(page).to have_selector @delete_link
-    find(@delete_link).click
+
+    expect(page).to have_link 'Delete'
+    click_on 'Delete'
 
     expect(current_path).to eq question_path(question)
-    expect(page).to_not have_selector @delete_link
+    expect(page).to_not have_content answer.body
   end
 
   scenario 'User tries to delete answer of another user' do
-    sign_in(user)
-    someones_answer = create(:answer, question: question, user: create(:user))
+    sign_in(create(:user))
     visit question_path(question)
 
-    expect(page).to_not have_selector "a[data-answer-id=\"#{someones_answer.id}\"]"
+    expect(page).to_not have_link 'Delete'
   end
 
   scenario 'Non-authenticated user tries to delete answer' do
     visit question_path(question)
 
-    expect(page).to_not have_selector @delete_link
+    expect(page).to_not have_link 'Delete'
   end
 end

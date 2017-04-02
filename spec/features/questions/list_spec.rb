@@ -12,10 +12,11 @@ feature 'List questions', %q{
     visit questions_path
     expect(page).to have_selector '.questions-list'
 
-    questions_list = find '.questions-list'
-    questions.each do |q|
-        expect(questions_list).to have_link q.title
-        expect(questions_list).to have_content q.body
+    within '.questions-list' do
+      questions.each do |q|
+        expect(page).to have_link q.title
+        expect(page).to have_content q.body
       end
+    end
   end
 end
