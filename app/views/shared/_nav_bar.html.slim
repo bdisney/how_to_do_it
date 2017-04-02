@@ -1,11 +1,14 @@
 .navbar.navbar-default.navbar-fixed-top
   .container
     .navbar-header
+      button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-links"
+        = fa_icon 'bars'
       = link_to 'How to do It', root_path, class: 'navbar-brand'
       
-    ul class="nav navbar-nav navbar-right"
-      - if user_signed_in?
-        li= link_to 'Log Out', destroy_user_session_path, method: :delete, class: 'nav-item nav-link'
-      - else
-        li= link_to 'Log In', new_user_session_path, class: 'nav-item nav-link'
-        li= link_to 'Sign Up', new_user_registration_path, class: 'nav-item nav-link'
+    .collapse.navbar-collapse id="nav-links"
+      ul class="nav navbar-nav navbar-right"
+        - if user_signed_in?
+          li= link_to 'Log Out', destroy_user_session_path, method: :delete, class: 'nav-item nav-link'
+        - else
+          li= link_to 'Log In', new_user_session_path, class: 'nav-item nav-link'
+          li= link_to 'Sign Up', new_user_registration_path, class: 'nav-item nav-link'
