@@ -1,9 +1,8 @@
-.row
+.row.button-bar
   .col-sm-12
     - if user_signed_in? && current_user.author_of?(@question)
       = link_to 'Delete', @question, method: :delete, class: 'btn btn-danger btn-sm pull-right',
               id: 'delete-question-btn', role: 'button'
-    = link_to 'Add answer', new_question_answer_path(@question), class: 'btn btn-primary btn-sm pull-right', role: 'button'
 
 
 h1= @question.title
@@ -12,14 +11,13 @@ h1= @question.title
   = @question.body
 
 hr
-h4 Answers:
+h2 Answers:
 
 - if @question.answers.present?
   .answers-list
-    - @question.answers.each do |answer|
-      .answer
-      = render 'answer', answer: answer
+    = render @question.answers
 - else
   p class="empty-text" There is no answers yet.
 
-
+- if user_signed_in?
+  = render 'answers/form'

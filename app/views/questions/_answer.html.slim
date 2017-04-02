@@ -1,5 +1,0 @@
-.answer
-  = answer.body
-  - if user_signed_in? && current_user.author_of?(answer)
-    .pull-right
-      = link_to 'Delete', answer, method: :delete, data: {answer_id: answer.id}
