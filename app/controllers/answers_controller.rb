@@ -1,12 +1,8 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
-  before_action :set_question, only: [:new, :create]
+  before_action :authenticate_user!, only: [:create]
+  before_action :set_question, only: [:create]
   before_action :set_answer, only: [:destroy]
   before_action :check_authority, only: [:destroy]
-
-  def new
-    @answer = Answer.new
-  end
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -15,7 +11,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Answer was successfully added.'
     else
-      render :new
+      render 'questions/show'
     end
   end
 
