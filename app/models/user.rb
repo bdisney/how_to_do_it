@@ -6,6 +6,6 @@ class User < ApplicationRecord
   has_many :answers, dependent: :nullify
 
   def author_of?(record)
-    record.user_id = id
+    record.user_id == id
   end
 end
