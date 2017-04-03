@@ -13,11 +13,11 @@ h1= @question.title
 hr
 h2 Answers:
 
-- if @question.answers.present?
-  .answers-list
+.answers-list
+  - if @question.answers.present?
     = render @question.answers
-- else
-  p class="empty-text" There is no answers yet.
+  - else
+    p class="empty-text" There is no answers yet.
 
 - if user_signed_in?
   = render 'answers/form'

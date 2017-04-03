@@ -1,0 +1,10 @@
+var $form = $('#new_answer'),
+    $alert = $form.find('.alert-danger');
+    $alert.remove();
+
+<% if @answer.errors.any? %>
+  $form.prepend('<%= j render 'shared/errors_messages', resource: @answer %>');
+<% else %>
+  $('.answers-list').append('<%= j render @answer %>');
+  $form.find('.form-control').val('');
+<% end %>
