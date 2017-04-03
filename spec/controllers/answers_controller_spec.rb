@@ -8,25 +8,25 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user
     context 'with valid attributes' do
       it 'save answer to db' do
-        expect { process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question } }
-            .to change(@user.answers.where(question: question), :count).by(1)
+        expect { process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question },
+                         format: :js }.to change(@user.answers.where(question: question), :count).by(1)
       end
 
       it 'redirects to related question' do
-        process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question }
-        expect(response).to redirect_to question
+        process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question }, format: :js
+        expect(response).to render_template :create
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save answer to db' do
-        expect { process :create, method: :post, params: { answer: attributes_for(:invalid_answer), question_id: question } }
-            .to_not change(Answer, :count)
+        expect { process :create, method: :post, params: { answer: attributes_for(:invalid_answer), question_id: question },
+                         format: :js }.to_not change(Answer, :count)
       end
 
       it 'render question page with error msg' do
-        process :create, method: :post, params: { answer: attributes_for(:invalid_answer), question_id: question }
-        expect(response).to render_template 'questions/show'
+        process :create, method: :post, params: { answer: attributes_for(:invalid_answer), question_id: question }, format: :js
+        expect(response).to render_template :create
       end
     end
   end
