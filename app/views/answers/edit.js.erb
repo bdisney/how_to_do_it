@@ -1,0 +1,12 @@
+$(document).off('ajax:success', '.answer-edit').on('ajax:success', '.answer-edit', function() {
+    var $answer = $(this).closest('.answer');
+    
+    $answer.append('<%= j render 'answers/form_edit' %>');
+    $answer.find('.answer-content').hide();
+    
+    $answer.on('click', '.cancel', function(e) {
+        e.preventDefault();
+        $(this).closest('.answer-form').remove();
+        $answer.find('.answer-content').show();
+    });
+});

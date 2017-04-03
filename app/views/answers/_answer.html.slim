@@ -1,7 +1,15 @@
 - if answer.persisted?
   .answer
-    = answer.body
-    - if user_signed_in? && current_user.author_of?(answer)
-      .pull-right
-        = link_to 'Delete', answer_path(answer), method: :delete, remote: true,
-                data: {confirm: 'Are you sure?'}, class: 'answer-delete'
+    .answer-content
+      .answer-header
+        em= answer.created_at.strftime '%b %-d \'%y at %H:%M'
+        span &nbsp;|&nbsp;
+        mark= answer.user.email
+      .answer-body
+        = answer.body
+        - if user_signed_in? && current_user.author_of?(answer)
+          .answer-buttons.pull-right
+            = link_to 'Edit', edit_answer_path(answer), remote: true, class: 'answer-edit'
+            | &nbsp;|&nbsp;
+            = link_to 'Delete', answer_path(answer), method: :delete, remote: true,
+                      data: { confirm: 'Are you sure?' }, class: 'answer-delete'

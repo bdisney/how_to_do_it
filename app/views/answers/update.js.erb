@@ -1,0 +1,10 @@
+var $form = $('#edit_answer_<%= @answer.id %>'),
+    $alert = $form.find('.alert-danger');
+
+    $alert.remove();
+
+    <% if @answer.errors.any? %>
+      $form.prepend('<%= j render 'shared/errors_messages', resource: @answer %>');
+    <% else %>
+      $form.closest('.answer').replaceWith('<%= j render @answer %>');
+    <% end %>
