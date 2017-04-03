@@ -1,0 +1,3 @@
+$(document).on('ajax:success', '.answer-delete', function(e) {
+    $(this).closest('.answer').fadeOut().remove();
+});

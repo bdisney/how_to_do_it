@@ -3,4 +3,5 @@
     = answer.body
     - if user_signed_in? && current_user.author_of?(answer)
       .pull-right
-        = link_to 'Delete', answer_path(answer), method: :delete
+        = link_to 'Delete', answer_path(answer), method: :delete, remote: true,
+                data: {confirm: 'Are you sure?'}, class: 'answer-delete'
