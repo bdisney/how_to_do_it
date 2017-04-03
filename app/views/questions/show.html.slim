@@ -3,12 +3,11 @@
     - if user_signed_in? && current_user.author_of?(@question)
       = link_to 'Delete', @question, method: :delete, class: 'btn btn-danger btn-sm pull-right',
               id: 'delete-question-btn', role: 'button'
+      = link_to 'Edit', edit_question_path(@question), remote: true, class: 'btn btn-primary btn-sm pull-right',
+              id: 'edit-question-btn', role: 'button'
 
 
-h1= @question.title
-
-.question-body
-  = @question.body
+= render 'questions/question_view'
 
 hr
 h2 Answers:

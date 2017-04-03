@@ -1,0 +1,12 @@
+$('#edit-question-btn').off('ajax:success').on('ajax:success', function() {
+    var $question = $('.question');
+    
+    $question.append('<%= j render 'questions/form_edit' %>')
+    $question.find('.question-content').hide();
+    
+    $question.on('click', '.cancel', function(e) {
+        e.preventDefault();
+        $(this).closest('.question-form').remove();
+        $question.find('.question-content').show();
+    });
+});
