@@ -42,12 +42,11 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'rails-controller-testing'
-end
-
-group :test do
+  gem 'launchy'
   gem 'shoulda-matchers'
   gem 'capybara'
-  gem 'launchy'
+  gem 'capybara-webkit'
+  gem 'database_cleaner'
 end
 
 group :development do
