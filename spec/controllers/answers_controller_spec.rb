@@ -7,12 +7,12 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     sign_in_user
     context 'with valid attributes' do
-      it 'save answer to db' do
+      it 'saves answer to db' do
         expect { process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question },
                          format: :js }.to change(@user.answers.where(question: question), :count).by(1)
       end
 
-      it 'redirects to related question' do
+      it 'renders create template' do
         process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question }, format: :js
         expect(response).to render_template :create
       end
@@ -24,7 +24,7 @@ RSpec.describe AnswersController, type: :controller do
                          format: :js }.to_not change(Answer, :count)
       end
 
-      it 'render question page with error msg' do
+      it 'renders create template with error messages' do
         process :create, method: :post, params: { answer: attributes_for(:invalid_answer), question_id: question }, format: :js
         expect(response).to render_template :create
       end
@@ -38,13 +38,13 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answer) { create(:answer, user: @user) }
   
       it 'deletes answer from db' do
-        expect { process :destroy, method: :delete, params: { id: answer.id } }
+        expect { process :destroy, method: :delete, params: { id: answer.id }, format: :js }
             .to change(Answer, :count).by(-1)
       end
 
-      it 'redirects to related question page' do
-        process :destroy, method: :delete, params: { id: answer.id }
-        expect(response).to redirect_to question_path(answer.question)
+      it 'renders destroy template' do
+        process :destroy, method: :delete, params: { id: answer.id }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -52,12 +52,12 @@ RSpec.describe AnswersController, type: :controller do
       before { answer }
 
       it 'does not delete answer from db' do
-        expect { process :destroy, method: :delete, params: { id: answer.id } }
+        expect { process :destroy, method: :delete, params: { id: answer.id }, format: :js }
             .to_not change(Answer, :count)
       end
 
       it 'redirects to related question page' do
-        process :destroy, method: :delete, params: { id: answer.id }
+        process :destroy, method: :delete, params: { id: answer.id }, format: :js
         expect(response).to redirect_to question
       end
     end
