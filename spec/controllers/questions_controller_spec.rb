@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  let(:question) { create(:question) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -17,7 +18,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:question) { create(:question) }
     let(:answer) { create(:answer, question: question) }
 
     before { get :show, params: { id: question.id } }
@@ -77,25 +77,100 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'GET #edit' do
+    sign_in_user
+
+    context 'edit by author' do
+      let!(:users_question) { create(:question, user: @user) }
+      before { get :edit, xhr: true, params: { id: users_question.id }, format: :js }
+
+      it 'assigns requested question to @question' do
+        expect(assigns(:question)).to eq(users_question)
+      end
+
+      it 'renders edit template' do
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'edit by someone else' do
+      before { get :edit, xhr: true, params: { id: question.id }, format: :js }
+
+      it 'redirects to question page' do
+        expect(response).to redirect_to questions_path
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    sign_in_user
+    let!(:users_question) { create(:question, user: @user) }
+
+    context 'update by author with valid attributes' do
+      before { process :update, method: :patch,
+                       params: { id: users_question.id, question: { title: 'new question title', body: 'new question body' } },
+                       format: :js }
+
+      it 'assigns requested question to @question' do
+        expect(assigns(:question)).to eq(users_question)
+      end
+
+      it 'saves new question to db' do
+        users_question.reload
+        expect(users_question.title).to eq 'new question title'
+        expect(users_question.body).to eq 'new question body'
+      end
+
+      it 'renders update template' do
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'update by author with invalid attributes' do
+      before { process :update, method: :patch,
+                       params: { id: users_question.id, question: { title: '', body: '' } },
+                       format: :js }
+
+      it 'does not save question to db' do
+        users_question.reload
+        expect(users_question.title).to match /^question_title_\d+$/
+        expect(users_question.body).to match /^question_body_\d+$/
+      end
+
+      it 'renders update template' do
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'update by someone else' do
+      it 'redirects to index' do
+        process :update, method: :patch, params: { id: question.id, question: attributes_for(:question) }, format: :js
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+  end
+
+
   describe 'DELETE #destroy' do
     sign_in_user
     
     context 'delete by author' do
-      let!(:question) { create(:question, user: @user) }
+      let!(:users_question) { create(:question, user: @user) }
     
       it 'deletes question from db' do
-        expect { process :destroy, method: :delete, params: { id: question.id } }
+        expect { process :destroy, method: :delete, params: { id: users_question.id } }
             .to change(Question, :count).by(-1)
       end
   
       it 'redirects to index' do
-        process :destroy, method: :delete, params: { id: question.id }
+        process :destroy, method: :delete, params: { id: users_question.id }
         expect(response).to redirect_to questions_path
       end
     end
 
     context 'delete by someone else' do
-      let!(:question) { create(:question) }
+      before { question }
 
       it 'does not delete question from db' do
         expect { process :destroy, method: :delete, params: { id: question.id } }
