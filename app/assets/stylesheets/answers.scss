@@ -1,0 +1,42 @@
+.answers-list {
+  .answer {
+    padding: 1em 0;
+    border-bottom: 1px solid $well-border;
+    
+    &-content {
+      padding-left: 60px;
+      position: relative;
+    }
+    
+    &-vote {
+      position: absolute;
+      left: 0;
+      width: 60px;
+      height: 40px;
+      text-align: center;
+    }
+    
+    .accepted-on, .accepted-off {
+      line-height: 24px;
+      display: inline-block;
+      padding: 8px;
+      
+      i {
+        font-size: 24px;
+      }
+    }
+    
+    .accepted-off {
+      color: $gray-light;
+      opacity: .3;
+      
+      &:hover {
+        opacity: 1;
+      }
+    }
+    
+    .accepted-on {
+      color: $brand-success;
+    }
+  }
+}

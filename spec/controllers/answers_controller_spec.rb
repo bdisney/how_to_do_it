@@ -98,6 +98,44 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #accept' do
+    context 'accept by author of question' do
+      let(:users_question) { create(:question, user: @user) }
+      let(:new_answer) { create(:answer, question: users_question, user: create(:user)) }
+
+      before { process :accept, method: :patch, params: { id: new_answer.id }, format: :js }
+
+      it 'assigns requested answer to @answer' do
+        expect(assigns(:answer)).to eq(new_answer)
+      end
+
+      it 'make answer accepted' do
+        new_answer.reload
+        expect(new_answer).to be_accepted
+      end
+
+      it 'renders update template' do
+        expect(response).to render_template :accept
+      end
+    end
+
+    context 'accept by someone else' do
+      let(:unknown_user) { create(:user) }
+      let(:someones_question) { create(:question, user: unknown_user) }
+      let!(:someones_answer) { create(:answer, question: someones_question) }
+
+      before { process :accept, method: :patch, params: { id: someones_answer.id }, format: :js }
+
+      it 'do not make answer accepted' do
+        expect(someones_answer.reload).to_not be_accepted
+      end
+
+      it 'redirects to related question page' do
+        expect(response).to redirect_to someones_question
+      end
+    end
+  end
+
 
   describe 'DELETE #destroy' do
     context 'delete by author' do

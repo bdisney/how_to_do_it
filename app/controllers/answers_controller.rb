@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: [:create]
-  before_action :set_answer, only: [:edit, :update, :destroy]
+  before_action :set_answer, only: [:edit, :update, :destroy, :accept]
   before_action :check_authority, only: [:edit, :update, :destroy]
 
   def create
@@ -20,6 +20,11 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy
+  end
+
+  def accept
+    return redirect_to @answer.question, alert: 'Permission denied!' unless current_user.author_of?(@answer.question)
+    @answer.accept
   end
 
   private
