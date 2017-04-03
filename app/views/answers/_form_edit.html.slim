@@ -1,0 +1,12 @@
+.answer-form
+  = render 'shared/errors_messages', resource: @answer
+
+  .row
+    .col-lg-6.col-md-8.col-sm-12
+      = form_for @answer, remote: true do |f|
+        .form-group
+          = f.label :body, 'Add your answer:'
+          = f.text_area :body, class: 'form-control'
+        div
+          = button_tag 'Cancel', type: 'button', class: 'btn btn-default cancel'
+          = f.submit 'Update answer', class: 'btn btn-primary'
