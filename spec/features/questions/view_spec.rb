@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'feature_spec_helper'
 
 feature 'View question with answers', %q{
   In order to find out solution of a problem

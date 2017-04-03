@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'feature_spec_helper'
 
 feature 'Author can delete answers', %q{
   In order to hide my wrong answer
