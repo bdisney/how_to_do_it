@@ -10,6 +10,7 @@ gem 'slim-rails'
 gem 'bootstrap-sass', '~>3.3'
 gem 'font-awesome-rails'
 gem 'devise'
+gem 'gravatar_image_tag'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
