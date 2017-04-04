@@ -1,4 +1,9 @@
 .question
+  .question-meta
+    .avatar= gravatar_image_tag(question.user.email)
+    em= question.created_at.strftime '%b %-d \'%y at %H:%M'
+    span &nbsp;|&nbsp;
+    mark= question.user.email
   h4 class="question-title"
     = link_to question.title, question
   .question-summary
