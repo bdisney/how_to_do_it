@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
   before_action :check_authority, only: [:edit, :update, :destroy]
 
   def index
-    @questions = Question.all
+    @questions = Question.includes(:user)
   end
 
   def show

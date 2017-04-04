@@ -1,0 +1,14 @@
+.question {
+  padding: 1em 0;
+  border-bottom: 1px solid $well-border;
+  
+  &-meta {
+    overflow: hidden;
+    line-height: 32px;
+    
+    .avatar {
+      float: left;
+      margin-right: 5px;
+    }
+  }
+}
