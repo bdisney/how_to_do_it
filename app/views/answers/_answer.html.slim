@@ -9,10 +9,11 @@
         mark= answer.user.email
 
       .answer-body
-        = answer.body
         - if user_signed_in? && current_user.author_of?(answer)
           .answer-buttons.pull-right
             = link_to 'Edit', edit_answer_path(answer), remote: true, class: 'answer-edit'
             | &nbsp;|&nbsp;
             = link_to 'Delete', answer_path(answer), method: :delete, remote: true,
                       data: { confirm: 'Are you sure?' }, class: 'answer-delete'
+        div= simple_format(answer.body)
+        = render 'shared/attachments', resource: answer

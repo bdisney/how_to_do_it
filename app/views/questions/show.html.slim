@@ -13,7 +13,7 @@ hr
 h2 Answers:
 
 .answers-list
-  - if @question.answers.present?
+  - if @question.answers.select(&:persisted?).any?
     = render @question.answers
   - else
     p class="empty-text" There is no answers yet.

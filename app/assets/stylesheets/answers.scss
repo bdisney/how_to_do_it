@@ -2,10 +2,18 @@
   .answer {
     padding: 1em 0;
     border-bottom: 1px solid $well-border;
+
+    &-header {
+      margin-bottom: 10px;
+    }
     
     &-content {
       padding-left: 60px;
       position: relative;
+    }
+
+    &-body div {
+      overflow: hidden ;
     }
     
     &-vote {
@@ -14,6 +22,29 @@
       width: 60px;
       height: 40px;
       text-align: center;
+    }
+
+    &-attachments {
+      background-color: #f7f7f7;
+      padding: 5px;
+      margin-top: 10px;
+
+      h3 {
+        font-size: 1em;
+        float: left;
+        margin: 0px 15px 0px 0px;
+        line-height: inherit;
+      }
+
+      .attachments {
+        margin-bottom: 0;
+        overflow: hidden;
+
+        li {
+          display: inline-block;
+          margin-right: 15px;
+        }
+      }
     }
     
     .accepted-on, .accepted-off {

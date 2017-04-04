@@ -1,0 +1,8 @@
+- if resource.attachments.present?
+  div class="#{resource.class.to_s.underscore}-attachments"
+    h3 Files
+    ul class="attachments list-unstyled"
+      - resource.attachments.each do |attachment|
+        li
+          = fa_icon 'paperclip'
+          = link_to attachment.file.identifier, attachment.file.url
