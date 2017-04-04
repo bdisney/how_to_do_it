@@ -13,6 +13,7 @@ gem 'devise'
 gem 'gravatar_image_tag'
 gem 'carrierwave'
 gem 'remotipart'
+gem 'cocoon'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
