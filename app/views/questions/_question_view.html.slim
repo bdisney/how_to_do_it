@@ -3,4 +3,5 @@
     h1 class="question-header"
       = @question.title
     .question-body
-      = @question.body
+      = simple_format(@question.body)
+    = render 'shared/attachments', resource: @question
