@@ -4,6 +4,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
   
   config.include AcceptanceHelper, type: :feature
+  config.include WaitForAjax, type: :feature
   
   Capybara.javascript_driver = :webkit
   

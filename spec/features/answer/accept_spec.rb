@@ -10,7 +10,7 @@ feature 'Accept answer', %q{
   given(:owner) { create(:user) }
   given(:question) { create(:question_with_answers, user: owner) }
 
-  describe 'Author of question' do
+  describe 'Author of question did not accept any answer yet' do
     before do
         sign_in(owner)
         visit question_path(question)
@@ -30,30 +30,46 @@ feature 'Accept answer', %q{
       to_accept = question.answers.sample
       within ".answer[data-answer-id='#{to_accept.id}']" do
         find('.answer-accept').click
+        wait_for_ajax
 
         expect(page).to have_selector '.accepted-on'
         expect(page).to_not have_selector '.accepted-off'
       end
     end
+  end
+
+  describe 'Author of question already accepted some answer' do
+    before do
+      @accepted, @to_accept = question.answers.sample(2)
+      @accepted.update(accepted: true)
+      sign_in(owner)
+      visit question_path(question)
+    end
 
     scenario 'can change his choice and accept another answer', js: true do
-      accepted, to_accept = question.answers.sample(2)
-
-      within ".answer[data-answer-id='#{accepted.id}']" do
+      within ".answer[data-answer-id='#{@to_accept.id}']" do
         find('.answer-accept').click
-      end
+        wait_for_ajax
 
-      within ".answer[data-answer-id='#{to_accept.id}']" do
-        find('.answer-accept').click
         expect(page).to have_selector '.accepted-on'
         expect(page).to_not have_selector '.accepted-off'
       end
 
-      within ".answer[data-answer-id='#{accepted.id}']" do
+      within ".answer[data-answer-id='#{@accepted.id}']" do
         expect(page).to have_selector '.accepted-off'
         expect(page).to_not have_selector '.accepted-on'
       end
+    end
 
+    scenario 'always see accepted answer on the top', js: true do
+      expect(first('.answer')).to have_content @accepted.body
+
+      within ".answer[data-answer-id='#{@to_accept.id}']" do
+        find('.answer-accept').click
+        wait_for_ajax
+      end
+
+      expect(first('.answer')).to have_content @to_accept.body
     end
   end
 
