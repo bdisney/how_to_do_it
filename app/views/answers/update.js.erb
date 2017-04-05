@@ -1,10 +1,18 @@
 var $form = $('#edit_answer_<%= @answer.id %>'),
     $alert = $form.find('.alert-danger');
 
-    $alert.remove();
+$alert.remove();
 
-    <% if @answer.errors.any? %>
-      $form.prepend('<%= j render 'shared/errors_messages', resource: @answer %>');
+<% if @answer.errors.any? %>
+    <% if remotipart_submitted? %>
+        $form.prepend('<%= j "#{render 'shared/errors_messages', resource: @answer}" %>');
     <% else %>
-      $form.closest('.answer').replaceWith('<%= j render @answer %>');
+        $form.prepend('<%= j render 'shared/errors_messages', resource: @answer %>');
     <% end %>
+<% else %>
+    <% if remotipart_submitted? %>
+        $form.closest('.answer').replaceWith('<%= j "#{render @answer}" %>');
+    <% else %>
+        $form.closest('.answer').replaceWith('<%= j render @answer %>');
+    <% end %>
+<% end %>

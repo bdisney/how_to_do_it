@@ -1,10 +1,18 @@
 var $form = $('#edit_question_<%= @question.id %>'),
     $alert = $form.find('.alert-danger');
 
-    $alert.remove();
+$alert.remove();
 
-    <% if @question.errors.any? %>
-      $form.prepend('<%= j render 'shared/errors_messages', resource: @question %>');
+<% if @question.errors.any? %>
+    <% if remotipart_submitted? %>
+        $form.prepend('<%= j "#{render 'shared/errors_messages', resource: @question}" %>');
     <% else %>
-      $form.closest('.question').replaceWith('<%= j render 'questions/question_view' %>');
+        $form.prepend('<%= j render 'shared/errors_messages', resource: @question %>');
     <% end %>
+<% else %>
+    <% if remotipart_submitted? %>
+        $form.closest('.question').replaceWith('<%= j "#{render 'questions/question_view'}" %>');
+    <% else %>
+        $form.closest('.question').replaceWith('<%= j render 'questions/question_view' %>');
+    <% end %>
+<% end %>
