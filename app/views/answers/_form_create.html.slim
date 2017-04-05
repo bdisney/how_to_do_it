@@ -1,6 +1,5 @@
 = render 'shared/errors_messages', resource: @answer
-hr
-
+<br>
 .row
   .col-lg-6.col-md-8.col-sm-12
     = form_for [@question, @answer], html: { multipart: true }, remote: true do |f|
