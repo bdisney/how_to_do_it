@@ -3,17 +3,9 @@ var $form = $('#new_answer'),
     $alert.remove();
 
 <% if @answer.errors.any? %>
-    <% if remotipart_submitted? %>
-      $form.prepend('<%= j "#{render 'shared/errors_messages', resource: @answer}" %>');
-    <% else %>
-      $form.prepend('<%= j render 'shared/errors_messages', resource: @answer %>');
-    <% end %>
+    $form.prepend('<%= fix_remotipart { render 'shared/errors_messages', resource: @answer } %>');
 <% else %>
-    <% if remotipart_submitted? %>
-      $('.answers-list').append('<%= j "#{render @answer}" %>');
-    <% else %>
-      $('.answers-list').append('<%= j render @answer %>');
-    <% end %>
+    $('.answers-list').append('<%= fix_remotipart { render @answer } %>');
 
     $form.find('input, textarea').val('');
     $form.find('.nested-fields').not(':last').remove();
