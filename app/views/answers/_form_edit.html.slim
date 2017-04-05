@@ -7,6 +7,7 @@
         .form-group
           = f.label :body, 'Add your answer:'
           = f.text_area :body, class: 'form-control'
+        = render 'attachments/form_attachments', f: f
         div
           = button_tag 'Cancel', type: 'button', class: 'btn btn-default cancel'
           = f.submit 'Update answer', class: 'btn btn-primary'
