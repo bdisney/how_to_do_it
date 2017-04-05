@@ -2,7 +2,7 @@
 <br>
 .row
   .col-lg-6.col-md-8.col-sm-12
-    = form_for [@question, @answer], html: { multipart: true }, remote: true do |f|
+    = form_for [@question, @answer], remote: true do |f|
       .form-group
         = f.label :body, 'Add your answer:'
         = f.text_area :body, class: 'form-control'

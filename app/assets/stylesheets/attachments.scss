@@ -1,8 +1,7 @@
-.attachments {
-  li i {
-    margin-right: 5px;
+.attachments li i,
+.attached i {
+  margin-right: 5px;
   }
-}
 
 #attachments {
   margin-bottom: 15px;
@@ -13,9 +12,12 @@
   .field {
     padding-right: 20px;
   }
-  .remove_fields {
+  .attachment-remove {
     position: absolute;
     right: 0;
     top: 0;
+    min-height: 20px;
+    min-width: 20px;
+    text-align: center;
   }
 }
