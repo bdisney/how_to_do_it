@@ -1,0 +1,5 @@
+.form-group.nested-fields
+  .field
+    = f.file_field :file
+  = link_to_remove_association f, { data: { toggle: 'tooltip' }, title: 'Remove' } do
+    = fa_icon 'remove'

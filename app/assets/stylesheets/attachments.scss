@@ -3,3 +3,19 @@
     margin-right: 5px;
   }
 }
+
+#attachments {
+  margin-bottom: 15px;
+  
+  .nested-fields {
+    position: relative;
+  }
+  .field {
+    padding-right: 20px;
+  }
+  .remove_fields {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

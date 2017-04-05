@@ -17,11 +17,14 @@ feature 'Attach files to answer', %q{
   scenario 'Authenticated user creates answer with attachments', js: true do
     data = attributes_for(:answer)
     fill_in 'Add your answer:', with: data[:body]
-    attach_file 'File', "#{Rails.root}/spec/files/file_01.txt"
+    first('input[type="file"]').set "#{Rails.root}/spec/files/file_01.txt"
+    click_on '+ Add file'
+    all('input[type="file"]').last.set "#{Rails.root}/spec/files/file_02.txt"
     click_on 'Add answer'
 
     within '.answers-list' do
       expect(page).to have_link 'file_01.txt', href: /uploads\/attachment\/file\/\d\/file_01\.txt/
+      expect(page).to have_link 'file_02.txt', href: /uploads\/attachment\/file\/\d\/file_02\.txt/
     end
   end
 end

@@ -7,9 +7,6 @@ hr
       .form-group
         = f.label :body, 'Add your answer:'
         = f.text_area :body, class: 'form-control'
-      .form-group
-        = f.fields_for :attachments do |a|
-          = a.label :file
-          = a.file_field :file
+      = render 'attachments/form_attachments', f: f
       div
         = f.submit 'Add answer', class: 'btn btn-primary'
