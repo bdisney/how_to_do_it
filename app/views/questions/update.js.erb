@@ -4,15 +4,7 @@ var $form = $('#edit_question_<%= @question.id %>'),
 $alert.remove();
 
 <% if @question.errors.any? %>
-    <% if remotipart_submitted? %>
-        $form.prepend('<%= j "#{render 'shared/errors_messages', resource: @question}" %>');
-    <% else %>
-        $form.prepend('<%= j render 'shared/errors_messages', resource: @question %>');
-    <% end %>
+    $form.prepend('<%= fix_remotipart { render 'shared/errors_messages', resource: @question } %>');
 <% else %>
-    <% if remotipart_submitted? %>
-        $form.closest('.question').replaceWith('<%= j "#{render 'questions/question_view'}" %>');
-    <% else %>
-        $form.closest('.question').replaceWith('<%= j render 'questions/question_view' %>');
-    <% end %>
+    $form.closest('.question').replaceWith('<%= fix_remotipart { render 'questions/question_view' } %>');
 <% end %>
