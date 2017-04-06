@@ -1,31 +1,30 @@
 .answers-list {
   .answer {
-    padding: 1em 0;
-    border-bottom: 1px solid $well-border;
-
-    &-header {
-      margin-bottom: 10px;
-    }
-    
-    &-content, &-form {
-      padding-left: 60px;
+    &-form {
       position: relative;
+      padding-left: 50px;
+    }
+
+    &-body {
+      min-height: 88px;
     }
 
     &-body div {
       overflow: hidden ;
     }
-    
-    &-vote {
-      position: absolute;
-      left: 0;
-      width: 60px;
-      height: 40px;
+
+    &-accepted {
+      width: 50px;
       text-align: center;
+
+      a {
+        min-height: 28px;
+        min-width: 24px;
+      }
     }
 
     &-attachments {
-      background-color: #f7f7f7;
+      background-color: #f9fafe;
       padding: 5px;
       margin-top: 10px;
 
@@ -50,8 +49,7 @@
     .accepted-on, .accepted-off {
       line-height: 24px;
       display: inline-block;
-      padding: 8px;
-      
+
       i {
         font-size: 24px;
       }
