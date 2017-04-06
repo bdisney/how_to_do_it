@@ -1,7 +1,9 @@
-.question
-  .question-content
-    h1 class="question-header"
-      = @question.title
-    .question-body
+.item.question
+  = render 'shared/signature', resource: @question
+  .item-content.question-content
+    .item-actions
+      = render 'votes/vote', resource: @question
+    h1= @question.title
+    .item-body.question-body
       = simple_format(@question.body)
     = render 'shared/attachments', resource: @question

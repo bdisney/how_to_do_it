@@ -1,0 +1,5 @@
+.item-signature
+  .avatar= gravatar_image_tag(resource.user.email)
+  mark= resource.user.email
+  span &nbsp;|&nbsp;
+  em= resource.created_at.strftime '%b %-d \'%y at %H:%M'

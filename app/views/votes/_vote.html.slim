@@ -1,0 +1,13 @@
+.vote
+  - if user_signed_in? && current_user.author_of?(resource) || !user_signed_in?
+    span= fa_icon 'thumbs-up'
+    span.rating= resource.rating
+    span= fa_icon 'thumbs-down'
+  - else
+    = link_to polymorphic_path([:vote_up, resource]), method: :patch, remote: true,
+            class: "vote-up#{resource.has_positive_vote?(current_user) ? ' voted' : ''}" do
+      = fa_icon 'thumbs-up'
+    span.rating= resource.rating
+    = link_to polymorphic_path([:vote_down, resource]), method: :patch, remote: true,
+            class: "vote-down#{resource.has_negative_vote?(current_user) ? ' voted' : ''}" do
+      = fa_icon 'thumbs-down'

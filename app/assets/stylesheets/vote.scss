@@ -1,0 +1,25 @@
+.vote {
+  text-align: center;
+  
+  span, a {
+    display: block;
+    color: $gray-light;
+    opacity: .3;
+  }
+  
+  a:hover, .voted, .rating {
+    opacity: 1;
+  }
+  
+  .rating {
+    font-weight: 600;
+  }
+  
+  &-up.voted {
+    color: $brand-success;
+  }
+  
+  &-down.voted {
+    color:  $brand-danger;
+  }
+}

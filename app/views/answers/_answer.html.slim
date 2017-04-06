@@ -1,14 +1,13 @@
 - if answer.persisted?
-  .answer data-answer-id="#{answer.id}"
-    .answer-content
-      = render 'answers/vote', answer: answer
+  .item.answer data-answer-id="#{answer.id}"
+    .item-content.answer-content
+      = render 'shared/signature', resource: answer
 
-      .answer-header
-        em= answer.created_at.strftime '%b %-d \'%y at %H:%M'
-        span &nbsp;|&nbsp;
-        mark= answer.user.email
+      .item-actions
+        = render 'answers/accept', answer: answer
+        = render 'votes/vote', resource: answer
 
-      .answer-body
+      .item-body.answer-body
         - if user_signed_in? && current_user.author_of?(answer)
           .answer-buttons.pull-right
             = link_to 'Edit', edit_answer_path(answer), remote: true, class: 'answer-edit'

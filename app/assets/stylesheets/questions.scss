@@ -1,14 +1,21 @@
 .question {
-  padding: 1em 0;
-  border-bottom: 1px solid $well-border;
-  
-  &-meta {
-    overflow: hidden;
-    line-height: 32px;
-    
-    .avatar {
-      float: left;
-      margin-right: 5px;
-    }
+  background-color: #f9fafe;
+  border-bottom: none;
+
+  h1 {
+    padding-left: 50px;
+  }
+
+  &-form {
+    position: relative;
+    padding-left: 50px;
+  }
+
+  &-body {
+    min-height: 30px;
+  }
+
+  &-attachments {
+    padding-left: 50px;
   }
 }
