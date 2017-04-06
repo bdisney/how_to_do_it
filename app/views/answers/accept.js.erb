@@ -3,6 +3,6 @@ $(document).off('ajax:success', '.answer-accept').on('ajax:success', '.answer-ac
         $picked_answer = $(this).closest('.answer');
 
     $accepted_answer.find('.answer-accept').toggleClass('accepted-on accepted-off');
-    $picked_answer.find('.answer-vote').replaceWith('<%= render 'answers/vote', answer: @answer %>');
+    $picked_answer.find('.answer-accepted').replaceWith('<%= render 'answers/accept', answer: @answer %>');
     $picked_answer.prependTo('.answers-list');
     });
