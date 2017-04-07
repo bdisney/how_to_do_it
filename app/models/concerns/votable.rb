@@ -40,6 +40,6 @@ module Votable
   end
   
   def has_vote?(user, value)
-    votes.where(user: user, value: value).any?
+    votes.exists?(user: user, value: value)
   end
 end
