@@ -29,4 +29,10 @@
     left: 0;
     width: 50px;
   }
+
+
+  &-comments {
+    border-top: 1px solid $well-border;
+    margin: 0 50px;
+  }
 }

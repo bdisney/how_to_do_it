@@ -13,6 +13,8 @@ gem 'devise'
 gem 'gravatar_image_tag'
 gem 'carrierwave'
 gem 'remotipart'
+gem 'sprockets', '3.6.3'
+gem 'skim'
 gem 'cocoon'
 
 # Use Puma as the app server

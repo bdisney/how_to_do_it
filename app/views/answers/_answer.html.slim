@@ -16,3 +16,4 @@
                       data: { confirm: 'Are you sure?' }, class: 'answer-delete'
         div= simple_format(answer.body)
         = render 'shared/attachments', resource: answer
+      = render 'comments/comments', resource: answer

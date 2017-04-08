@@ -1,8 +1,7 @@
 $('#edit-question-btn').off('ajax:success').on('ajax:success', function() {
     var $question = $('.question');
-    
-    $question.append('<%= j render 'questions/form_edit' %>')
-    $question.find('.question-content').hide();
+
+    $question.find('.question-content').hide().after('<%= j render 'questions/form_edit' %>');
     
     $question.on('click', '.cancel', function(e) {
         e.preventDefault();
