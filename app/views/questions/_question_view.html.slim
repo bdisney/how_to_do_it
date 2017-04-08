@@ -7,3 +7,4 @@
     .item-body.question-body
       = simple_format(@question.body)
     = render 'shared/attachments', resource: @question
+  = render 'comments/comments', resource: @question
