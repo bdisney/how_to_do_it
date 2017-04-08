@@ -1,0 +1,18 @@
+.comment {
+  font-size: 12px;
+  padding: 0.5em;
+  border-top: 1px solid $well-border;
+  
+  &:first-child {
+    border-top: none;
+  }
+  
+  &-form {
+    padding: 1em 0;
+    
+    form {
+      margin-top: 0.5em;
+    }
+  }
+}
+

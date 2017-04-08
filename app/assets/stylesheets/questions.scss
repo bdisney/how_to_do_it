@@ -9,6 +9,10 @@
   &-form {
     position: relative;
     padding-left: 50px;
+
+    form {
+      margin-bottom: 10px;
+    }
   }
 
   &-body {
