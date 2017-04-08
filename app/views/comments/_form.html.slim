@@ -1,0 +1,9 @@
+.row
+  .col-lg-6.col-md-8.col-sm-12
+    = form_for [@comment.commentable, @comment], remote: true do |f|
+      .form-group
+        = f.label :body, 'Your comment:'
+        = f.text_area :body, class: 'form-control'
+      div
+        = button_tag 'Cancel', type: 'button', class: 'btn btn-default cancel-comment'
+        = f.submit 'Add comment', class: 'btn btn-primary'

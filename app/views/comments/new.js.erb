@@ -1,0 +1,13 @@
+$('.add-comment').off('ajax:success').on('ajax:success', function() {
+    var $trigger = $(this),
+        $form = $trigger.closest('.comment-form');
+    
+    $trigger.hide();
+    $form.append('<%= j render 'comments/form' %>');
+    
+    $form.on('click', '.cancel-comment', function(e) {
+        e.preventDefault();
+        $form.find('.row').remove();
+        $trigger.show();
+    });
+});
