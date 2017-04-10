@@ -7,6 +7,7 @@ RSpec.configure do |config|
   config.include WaitForAjax, type: :feature
   
   Capybara.javascript_driver = :webkit
+  Capybara.server = :puma
   
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)

@@ -44,4 +44,28 @@ feature 'Create answer', %q{
 
     expect(page).to_not have_selector '#new_answer'
   end
+
+  scenario 'All users see new answers in real-time', js: true do
+    data = attributes_for(:answer)
+
+    Capybara.using_session('author') do
+      sign_in(user)
+      visit question_path(question)
+    end
+
+    Capybara.using_session('guest') do
+      visit question_path(question)
+    end
+
+    Capybara.using_session('author') do
+      fill_in 'Add your answer:', with: data[:body]
+      click_on 'Add answer'
+
+      expect(page).to have_content data[:body]
+    end
+
+    Capybara.using_session('guest') do
+      expect(page).to have_content data[:body]
+    end
+  end
 end

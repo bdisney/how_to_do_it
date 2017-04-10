@@ -10,6 +10,8 @@ class Question < ApplicationRecord
   validates :title, presence: true, length: { minimum: 10, maximum: 255 }
   validates :body, presence: true, length: { minimum: 10 }
 
+  after_create_commit { QuestionsBroadcastJob.perform_later self }
+
   accepts_nested_attributes_for :attachments,
                                 reject_if: proc { |attributes| attributes['file'].blank? },
                                 allow_destroy: true

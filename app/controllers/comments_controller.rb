@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     
     if @comment.save
-      render json: @comment, include: { user: {only: :email } }, status: :ok
+      render json: @comment
     else
       render json: @comment.errors.full_messages, status: :unprocessable_entity
     end

@@ -10,7 +10,11 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
 
-    @answer.save
+    if @answer.save
+      render json: @answer
+    else
+      render json: @answer.errors.full_messages, status: :unprocessable_entity
+    end
   end
 
   def edit
