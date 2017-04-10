@@ -16,6 +16,7 @@ gem 'remotipart'
 gem 'sprockets', '3.6.3'
 gem 'skim'
 gem 'cocoon'
+gem 'gon'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
