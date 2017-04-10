@@ -24,7 +24,7 @@ shared_examples_for 'add comment ability' do
       end
     end
 
-    scenario 'can not add comment with empty body', js:true do
+    scenario 'can not add comment with empty body', js: true do
       within commentable_container do
         click_on 'Add comment'
   
@@ -34,6 +34,38 @@ shared_examples_for 'add comment ability' do
         within '.alert-danger' do
           expect(page).to have_content 'Errors prohibited this record from being saved:'
           expect(page).to have_content 'Body can\'t be blank'
+        end
+      end
+    end
+  end
+
+  describe 'All users' do
+    scenario 'can see new comments in real-time', js: true do
+      Capybara.using_session('author') do
+        sign_in(user)
+        visit commentable_path
+      end
+
+      Capybara.using_session('guest') do
+        visit commentable_path
+      end
+
+      Capybara.using_session('author') do
+        within commentable_container do
+          click_on 'Add comment'
+
+          fill_in 'Your comment', with: 'Comment body'
+          click_on 'Add comment'
+
+          within '.comments-list' do
+            expect(page).to have_content 'Comment body'
+          end
+        end
+      end
+
+      Capybara.using_session('guest') do
+        within commentable_container do
+          expect(page).to have_content 'Comment body'
         end
       end
     end
