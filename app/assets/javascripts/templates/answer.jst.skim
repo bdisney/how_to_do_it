@@ -1,0 +1,55 @@
+.item.answer data-answer-id="#{@id}"
+  .item-content.answer-content
+    .item-signature
+      .avatar
+        img src="#{@user.avatar}"
+      mark #{@user.email}
+      span &nbsp;|&nbsp;
+      em #{@created_at}
+
+    .item-actions
+      - if gon.current_user_id == @question.author_id
+        .answer-accepted
+          a class="answer-accept accepted-off" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@id}/accept"
+            i class="fa fa-check"
+
+      .vote
+        - if gon.current_user_id == @user_id || !gon.current_user_id
+          span
+            i class="fa fa-thumbs-up"
+          span.rating= @rating
+          span
+            i class="fa fa-thumbs-down"
+        - else
+          a class="vote-up" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@id}/vote_up"
+            i class="fa fa-thumbs-up"
+          span.rating= @rating
+          a class="vote-down" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@id}/vote_down"
+            i class="fa fa-thumbs-down"
+
+    .item-body.answer-body
+      - if gon.current_user_id == @user_id
+        .answer-buttons.pull-right
+          a class="answer-edit" data-remote="true" href="/answers/#{@id}/edit"
+            | Edit
+          | &nbsp;|&nbsp;
+          a class="answer-delete" data-remote="true" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/answers/#{@id}"
+            | Delete
+
+      div #{{@body}}
+
+      - if @attachments.length
+        .answer-attachments
+            h3 Files
+            ul.attachments.list-unstyled
+              - $.each @attachments, (index, file)=>
+                li
+                  i class="fa fa-paperclip"
+                  a href="#{file.file.url}" #{file.file.name}
+
+    .item-comments
+      .comments-list
+      - if gon.current_user_id
+        .comment-form
+          a class="add-comment btn btn-default btn-sm" data-remote="true" href="/answers/#{@id}/comments/new"
+            | + Add comment
