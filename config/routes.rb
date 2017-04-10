@@ -22,5 +22,7 @@ Rails.application.routes.draw do
       patch :accept, on: :member
     end
   end
+
+  mount ActionCable.server => '/cable'
 end
 
