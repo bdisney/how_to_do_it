@@ -146,11 +146,6 @@ RSpec.describe AnswersController, type: :controller do
         expect { process :destroy, method: :delete, params: { id: users_answer.id }, format: :js }
             .to change(Answer, :count).by(-1)
       end
-
-      it 'renders destroy template' do
-        process :destroy, method: :delete, params: { id: users_answer.id }, format: :js
-        expect(response).to render_template :destroy
-      end
     end
 
     context 'delete by someone else' do
