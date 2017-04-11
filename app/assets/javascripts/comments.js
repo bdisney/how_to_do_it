@@ -9,4 +9,7 @@ $(document).on('turbolinks:load', function() {
     }).on('ajax:error', 'form.new_comment', function(e, xhr) {
         $(this).prepend(JST["templates/errors"](xhr.responseJSON));
     });
+    $(document).on('ajax:success', '.comment-delete', function() {
+        $(this).closest('.comment').fadeOut().remove();
+    });
 });

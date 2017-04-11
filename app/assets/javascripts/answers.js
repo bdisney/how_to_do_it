@@ -7,4 +7,7 @@ $(document).on('turbolinks:load', function() {
     }).on('ajax:error', 'form.new_answer', function(e, xhr) {
         $(this).prepend(JST["templates/errors"](xhr.responseJSON));
     });
+    $(document).on('ajax:success', '.answer-delete', function() {
+        $(this).closest('.answer').fadeOut().remove();
+    });
 });
