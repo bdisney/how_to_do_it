@@ -71,23 +71,56 @@ shared_examples_for 'add comment ability' do
     end
   end
 
-  scenario 'Non-authenticated user can not add comment' do
-    visit commentable_path
-    within commentable_container do
-      expect(page).to_not have_link 'Add comment'
+  describe 'Non-authenticated user' do
+    scenario 'can not add comment' do
+      visit commentable_path
+      within commentable_container do
+        expect(page).to_not have_link 'Add comment'
+      end
     end
   end
 end
 
 shared_examples_for 'remove comment ability' do
-  describe 'Author of comment' do
-    scenario 'see remove comment link'
+  let!(:comment) { create(:comment, commentable: commentable, user: user) }
 
-    scenario 'can remove it'
+  describe 'Author of comment' do
+    before do
+      sign_in(user)
+      visit commentable_path
+    end
+
+    scenario 'can see remove comment link', js: true do
+      within commentable_container do
+        expect(page).to have_selector '.comment-delete'
+      end
+    end
+
+    scenario 'can remove it', js: true do
+      within commentable_container do
+        expect(page).to have_content comment.body
+
+        find('.comment-delete').click
+        wait_for_ajax
+
+        expect(page).to_not have_content comment.body
+      end
+    end
   end
 
-  scenario 'Another authenticated user do not see remove link'
+  describe 'Another authenticated user' do
+    scenario 'does not see remove link', js: true do
+      sign_in(create(:user))
+      visit commentable_path
+      expect(page).to_not have_selector '.comment-delete'
+    end
+  end
 
-  scenario 'Non-authenticated user do not see remove link'
+  describe 'Non-authenticated user' do
+    scenario 'does not see remove link', js: true do
+      visit commentable_path
+      expect(page).to_not have_selector '.comment-delete'
+    end
+  end
 end
 

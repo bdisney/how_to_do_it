@@ -49,4 +49,27 @@ RSpec.describe CommentsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    context 'delete by author' do
+      let!(:users_comment) { create(:comment, commentable: question, user: @user) }
+
+      it 'deletes comment from db' do
+          expect { process :destroy, method: :delete, params: { id: users_comment.id }, format: :js }
+              .to change(question.comments, :count).by(-1)
+      end
+    end
+
+    context 'delete by someone else' do
+      it 'does not delete comment from db' do
+        expect { process :destroy, method: :delete, params: { id: comment.id }, format: :js }
+            .to_not change(Comment, :count)
+      end
+
+      it 'responds with status code 403 (forbidden)' do
+        process :destroy, method: :delete, params: { id: comment.id }, format: :js
+        expect(response.status).to eq(403)
+      end
+    end
+  end
 end
