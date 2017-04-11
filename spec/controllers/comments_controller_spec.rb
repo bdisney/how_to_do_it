@@ -25,13 +25,14 @@ RSpec.describe CommentsController, type: :controller do
     context 'with valid attributes' do
       it 'saves comment to db' do
         expect { process :create, method: :post, params: { comment: attributes_for(:comment), question_id: question },
-                         format: :js }.to change(question.comments, :count).by(1)
+                         format: :json }.to change(question.comments, :count).by(1)
       end
 
-      it 'responds with json, status ok' do
-        process :create, method: :post, params: { comment: attributes_for(:comment), question_id: question }, format: :js
-        expect(response.content_type).to eq('application/json')
-        expect(response.status).to eq(200)
+      it 'responds with json, status code 201 (created)' do
+        process :create, method: :post, params: { comment: attributes_for(:comment), question_id: question },
+                format: :json
+       expect(response.content_type).to eq('application/json')
+        expect(response.status).to eq(201)
       end
     end
 
@@ -39,12 +40,12 @@ RSpec.describe CommentsController, type: :controller do
       it 'does not save comment to db' do
         expect { process :create, method: :post,
                          params: { comment: attributes_for(:invalid_comment), question_id: question },
-                         format: :js }.to_not change(Comment, :count)
+                         format: :json }.to_not change(Comment, :count)
       end
 
       it 'responds with status 422' do
         process :create, method: :post, params: { comment: attributes_for(:invalid_comment), question_id: question },
-                format: :js
+                format: :json
         expect(response.status).to eq(422)
       end
     end
@@ -55,19 +56,19 @@ RSpec.describe CommentsController, type: :controller do
       let!(:users_comment) { create(:comment, commentable: question, user: @user) }
 
       it 'deletes comment from db' do
-          expect { process :destroy, method: :delete, params: { id: users_comment.id }, format: :js }
+        expect { process :destroy, method: :delete, params: { id: users_comment.id }, format: :json }
               .to change(question.comments, :count).by(-1)
       end
     end
 
     context 'delete by someone else' do
       it 'does not delete comment from db' do
-        expect { process :destroy, method: :delete, params: { id: comment.id }, format: :js }
+        expect { process :destroy, method: :delete, params: { id: comment.id }, format: :json }
             .to_not change(Comment, :count)
       end
 
       it 'responds with status code 403 (forbidden)' do
-        process :destroy, method: :delete, params: { id: comment.id }, format: :js
+        process :destroy, method: :delete, params: { id: comment.id }, format: :json
         expect(response.status).to eq(403)
       end
     end

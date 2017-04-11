@@ -13,13 +13,13 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       it 'saves answer to db' do
         expect { process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question },
-                         format: :js }.to change(@user.answers.where(question: question), :count).by(1)
+                         format: :json }.to change(@user.answers.where(question: question), :count).by(1)
       end
 
-      it 'responds with json, status ok' do
-        process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question }, format: :js
+      it 'responds with json, status "created"' do
+        process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question }, format: :json
         expect(response.content_type).to eq('application/json')
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(201)
       end
     end
 
@@ -27,12 +27,12 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not save answer to db' do
         expect { process :create, method: :post,
                          params: { answer: attributes_for(:invalid_answer), question_id: question },
-                         format: :js }.to_not change(Answer, :count)
+                         format: :json }.to_not change(Answer, :count)
       end
 
       it 'responds with status 422' do
         process :create, method: :post, params: { answer: attributes_for(:invalid_answer), question_id: question },
-                format: :js
+                format: :json
         expect(response.status).to eq(422)
       end
     end
@@ -54,8 +54,8 @@ RSpec.describe AnswersController, type: :controller do
     context 'edit by someone else' do
       before { get :edit, xhr: true, params: { id: answer.id }, format: :js }
 
-      it 'redirects to related question page' do
-        expect(response).to redirect_to question
+      it 'responds with status 403 (forbidden)' do
+        expect(response.status).to eq(403)
       end
     end
   end
@@ -94,9 +94,9 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'update by someone else' do
-      it 'redirects to related question page' do
+      it 'responds with status 403 (forbidden)' do
         process :update, method: :patch, params: { id: answer.id, answer: attributes_for(:answer) }, format: :js
-        expect(response).to redirect_to question
+        expect(response.status).to eq(403)
       end
     end
   end
@@ -133,8 +133,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(someones_answer.reload).to_not be_accepted
       end
 
-      it 'redirects to related question page' do
-        expect(response).to redirect_to someones_question
+      it 'responds with status 403 (forbidden)' do
+        expect(response.status).to eq(403)
       end
     end
   end
@@ -143,7 +143,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do
     context 'delete by author' do
       it 'deletes answer from db' do
-        expect { process :destroy, method: :delete, params: { id: users_answer.id }, format: :js }
+        expect { process :destroy, method: :delete, params: { id: users_answer.id }, format: :json }
             .to change(Answer, :count).by(-1)
       end
     end
@@ -154,9 +154,9 @@ RSpec.describe AnswersController, type: :controller do
             .to_not change(Answer, :count)
       end
 
-      it 'redirects to related question page' do
-        process :destroy, method: :delete, params: { id: answer.id }, format: :js
-        expect(response).to redirect_to question
+      it 'responds with status 403 (forbidden)' do
+        process :destroy, method: :delete, params: { id: answer.id }, format: :json
+        expect(response.status).to eq(403)
       end
     end
   end

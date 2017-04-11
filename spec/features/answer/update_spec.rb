@@ -44,7 +44,7 @@ feature 'Update answer', %q{
         click_on 'Update answer'
 
         expect(page).to have_content 'Errors prohibited this record from being saved:'
-        expect(page).to have_content 'Body can\'t be blank'
+        expect(page).to have_content 'body can\'t be blank'
         expect(page).to have_selector 'textarea'
       end
       expect(current_path).to eq question_path(question)

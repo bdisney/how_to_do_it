@@ -3,24 +3,20 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [:destroy]
   before_action :get_commentable, only: [:new, :create]
   before_action :check_authority, only: [:destroy]
+
+  respond_to :json
+  respond_to :js, only: [:new]
   
   def new
-    @comment = @commentable.comments.new
+    respond_with(@comment = @commentable.comments.new)
   end
   
   def create
-    @comment = @commentable.comments.new(comment_params)
-    @comment.user = current_user
-    
-    if @comment.save
-      render json: @comment
-    else
-      render json: @comment.errors.full_messages, status: :unprocessable_entity
-    end
+    respond_with(@comment = @commentable.comments.create(comment_params.merge(user: current_user)))
   end
   
   def destroy
-    @comment.destroy
+    respond_with(@comment.destroy)
   end
   
   private

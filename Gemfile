@@ -17,6 +17,7 @@ gem 'sprockets', '3.6.3'
 gem 'skim'
 gem 'cocoon'
 gem 'gon'
+gem 'responders'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'

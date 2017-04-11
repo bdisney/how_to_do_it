@@ -4,5 +4,6 @@
       span aria-hidden="true" &times;
     p Errors prohibited this record from being saved:
     ul
-      - resource.errors.full_messages.each do |message|
-        li= message
+      - resource.errors.messages.each do |attribute, messages|
+        - messages.each do |message|
+          li= "#{attribute} #{message}"
