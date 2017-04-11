@@ -50,8 +50,8 @@ feature 'Update question', %q{
         click_on 'Update question'
 
         expect(page).to have_content 'Errors prohibited this record from being saved:'
-        expect(page).to have_content 'Title can\'t be blank'
-        expect(page).to have_content 'Body can\'t be blank'
+        expect(page).to have_content 'title can\'t be blank'
+        expect(page).to have_content 'body can\'t be blank'
         expect(page).to have_selector '.question-form'
       end
     end

@@ -33,7 +33,7 @@ shared_examples_for 'add comment ability' do
   
         within '.alert-danger' do
           expect(page).to have_content 'Errors prohibited this record from being saved:'
-          expect(page).to have_content 'Body can\'t be blank'
+          expect(page).to have_content 'body can\'t be blank'
         end
       end
     end

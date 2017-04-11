@@ -3,5 +3,6 @@
     span aria-hidden="true" &times;
   p Errors prohibited this record from being saved:
   ul
-    - $.each @, (index, message)=>
-      li= message
+    - $. each @errors, (attribute, messages) =>
+      - $.each messages, (index, message)=>
+        li= "#{attribute} #{message}"
