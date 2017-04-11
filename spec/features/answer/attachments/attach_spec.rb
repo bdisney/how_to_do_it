@@ -17,7 +17,8 @@ feature 'Attach files to answer', %q{
   scenario 'Authenticated user creates answer with attachments', js: true do
     data = attributes_for(:answer)
     fill_in 'Add your answer:', with: data[:body]
-    first('input[type="file"]').set "#{Rails.root}/spec/files/file_01.txt"
+    click_on '+ Add file'
+    all('input[type="file"]').first.set "#{Rails.root}/spec/files/file_01.txt"
     click_on '+ Add file'
     all('input[type="file"]').last.set "#{Rails.root}/spec/files/file_02.txt"
     click_on 'Add answer'

@@ -17,7 +17,8 @@ feature 'Attach files to question', %q{
     data = attributes_for(:question)
     fill_in 'Title', with: data[:title]
     fill_in 'Body', with: data[:body]
-    first('input[type="file"]').set "#{Rails.root}/spec/files/file_01.txt"
+    click_on '+ Add file'
+    all('input[type="file"]').first.set "#{Rails.root}/spec/files/file_01.txt"
     click_on '+ Add file'
     all('input[type="file"]').last.set "#{Rails.root}/spec/files/file_02.txt"
     click_on 'Add question'
