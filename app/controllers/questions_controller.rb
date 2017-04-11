@@ -3,49 +3,53 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :build_answer, only: :show
+  before_action :store_user_id, only: :show
   before_action :check_authority, only: [:edit, :update, :destroy]
 
+  respond_to :html
+  respond_to :js, only: [:edit, :update]
+
   def index
-    @questions = Question.includes(:user)
+    respond_with(@questions = Question.includes(:user))
   end
 
   def new
-    @question = Question.new
-    @question.attachments.new
+    respond_with(@question = Question.new)
   end
 
   def show
-    @answer = @question.answers.new
-    @answer.attachments.new
-    gon.push({ current_user_id: current_user.id }) if user_signed_in?
+    respond_with(@question)
   end
 
   def edit
   end
 
   def create
-    @question = current_user.questions.new(question_params)
-
-    if @question.save
-      redirect_to @question, notice: 'Question was successfully created.'
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
     @question.update(question_params)
+    respond_with(@question)
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path, notice: 'Question was successfully deleted.'
+    respond_with(@question.destroy)
   end
 
   private
 
   def set_question
     @question = Question.find(params[:id])
+  end
+
+  def build_answer
+    @answer = @question.answers.new
+  end
+
+  def store_user_id
+    gon.push({ current_user_id: current_user.id }) if user_signed_in?
   end
 
   def check_authority
