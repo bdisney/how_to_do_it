@@ -5,6 +5,7 @@ RSpec.configure do |config|
   
   config.include AcceptanceHelper, type: :feature
   config.include WaitForAjax, type: :feature
+  config.include OmniauthMacros, type: :feature
   
   Capybara.javascript_driver = :webkit
   Capybara.server = :puma

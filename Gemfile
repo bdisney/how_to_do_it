@@ -18,6 +18,10 @@ gem 'skim'
 gem 'cocoon'
 gem 'gon'
 gem 'responders'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter', '~> 1.2'
+gem 'high_voltage', '~> 3.0.0'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
@@ -52,7 +56,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'launchy'
   gem 'shoulda-matchers'
-  gem 'capybara'
+  gem 'capybara', '~> 2.10', '>= 2.10.1'
   gem 'capybara-webkit'
   gem 'database_cleaner'
 end
