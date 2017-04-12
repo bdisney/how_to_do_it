@@ -102,6 +102,7 @@ GEM
       request_store (>= 1.0)
     gravatar_image_tag (1.2.0)
     hashie (3.5.5)
+    high_voltage (3.0.0)
     i18n (0.8.1)
     jbuilder (2.6.3)
       activesupport (>= 3.0.0, < 5.2)
@@ -292,13 +293,14 @@ DEPENDENCIES
   font-awesome-rails
   gon
   gravatar_image_tag
+  high_voltage (~> 3.0.0)
   jbuilder (~> 2.5)
   jquery-rails
   launchy
   listen (~> 3.0.5)
   omniauth
   omniauth-facebook
-  omniauth-twitter
+  omniauth-twitter (~> 1.2)
   pg
   puma (~> 3.0)
   rails (~> 5.0.0, >= 5.0.0.1)

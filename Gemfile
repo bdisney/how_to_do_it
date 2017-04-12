@@ -20,7 +20,8 @@ gem 'gon'
 gem 'responders'
 gem 'omniauth'
 gem 'omniauth-facebook'
-gem 'omniauth-twitter'
+gem 'omniauth-twitter', '~> 1.2'
+gem 'high_voltage', '~> 3.0.0'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
