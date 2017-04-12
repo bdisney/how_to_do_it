@@ -18,6 +18,9 @@ gem 'skim'
 gem 'cocoon'
 gem 'gon'
 gem 'responders'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
