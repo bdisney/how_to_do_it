@@ -2,10 +2,11 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_comment, only: [:destroy]
   before_action :get_commentable, only: [:new, :create]
-  before_action :check_authority, only: [:destroy]
 
   respond_to :json
   respond_to :js, only: [:new]
+
+  authorize_resource
   
   def new
     respond_with(@comment = @commentable.comments.new)
@@ -37,9 +38,5 @@ class CommentsController < ApplicationController
     end
 
     head :unprocessable_entity unless @commentable
-  end
-  
-  def check_authority
-    head :forbidden unless current_user.author_of?(@comment)
   end
 end
