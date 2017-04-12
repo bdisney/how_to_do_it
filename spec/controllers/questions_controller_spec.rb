@@ -98,8 +98,8 @@ RSpec.describe QuestionsController, type: :controller do
     context 'edit by someone else' do
       before { get :edit, xhr: true, params: { id: question.id }, format: :js }
 
-      it 'redirects to question page' do
-        expect(response).to redirect_to questions_path
+      it 'responds with status 403 (forbidden)' do
+        expect(response.status).to eq(403)
       end
     end
   end
@@ -145,9 +145,9 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'update by someone else' do
-      it 'redirects to index' do
+      it 'responds with status 403 (forbidden)' do
         process :update, method: :patch, params: { id: question.id, question: attributes_for(:question) }, format: :js
-        expect(response).to redirect_to questions_path
+        expect(response.status).to eq(403)
       end
     end
 
@@ -181,7 +181,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirects to index' do
         process :destroy, method: :delete, params: { id: question.id }
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to root_path
       end
     end
   end

@@ -4,11 +4,11 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: [:create]
   before_action :set_answer, only: [:edit, :update, :destroy, :accept]
-  before_action :check_answer_authority, only: [:edit, :update, :destroy]
-  before_action :check_question_authority, only: [:accept]
 
   respond_to :js, only: [:edit, :update, :accept]
   respond_to :json, only: [:create, :destroy]
+
+  authorize_resource
 
   def create
     respond_with(@question.answers.create(answer_params.merge(user: current_user)))
@@ -39,14 +39,6 @@ class AnswersController < ApplicationController
 
   def set_answer
     @answer = Answer.find(params[:id])
-  end
-
-  def check_answer_authority
-    head :forbidden unless current_user.author_of?(@answer)
-  end
-
-  def check_question_authority
-    head :forbidden unless current_user.author_of?(@answer.question)
   end
 
   def answer_params
