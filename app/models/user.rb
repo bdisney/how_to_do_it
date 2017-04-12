@@ -7,10 +7,6 @@ class User < ApplicationRecord
   has_many :answers, dependent: :nullify
   has_many :identities, dependent: :destroy
 
-  def author_of?(record)
-    record.user_id == id
-  end
-
   def self.find_for_oauth(auth)
     return if auth.blank?
 
