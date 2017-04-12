@@ -12,6 +12,8 @@ class User < ApplicationRecord
   end
 
   def self.find_for_oauth(auth)
+    return if auth.blank?
+
     identity = Identity.find_or_initialize_by(provider: auth.provider, uid: auth.uid.to_s)
     return identity.user if identity.persisted?
     
