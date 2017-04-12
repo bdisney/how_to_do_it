@@ -56,7 +56,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'launchy'
   gem 'shoulda-matchers'
-  gem 'capybara'
+  gem 'capybara', '~> 2.10', '>= 2.10.1'
   gem 'capybara-webkit'
   gem 'database_cleaner'
 end

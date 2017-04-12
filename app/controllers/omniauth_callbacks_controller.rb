@@ -1,19 +1,31 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  before_action :set_auth
+  before_action :request_email, only: :facebook
+  before_action :default_callback
+
   def facebook
-    default_callback('Facebook')
   end
 
   def twitter
-    default_callback('Twitter')
   end
 
   private
 
-  def default_callback(provider)
-    @user = User.find_for_oauth(request.env['omniauth.auth'])
-    if @user.persisted?
+  def set_auth
+    @auth = request.env['omniauth.auth']
+  end
+
+  def request_email
+    if @auth.info.email.blank?
+      redirect_to '/users/auth/facebook?auth_type=rerequest&scope=email'
+    end
+  end
+
+  def default_callback
+    @user = User.find_for_oauth(@auth)
+    if @user && @user.persisted?
       sign_in_and_redirect(@user, event: :authentication)
-      set_flash_message(:notice, :success, kind: provider) if is_navigational_format?
+      set_flash_message(:notice, :success, kind: @auth.provider.capitalize) if is_navigational_format?
     end
   end
 end
