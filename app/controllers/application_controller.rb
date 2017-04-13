@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { redirect_to root_path, alert: e.message }
       format.json { head :forbidden }
-      format.js { head :forbidden }
+      format.js { render json: { error: e.message }, status: :forbidden }
     end
   end
 
