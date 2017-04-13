@@ -34,6 +34,8 @@ class Ability
     can :accept, Answer do |answer|
       answer.question.user_id == user.id
     end
+
+    can :me, User
   end
 
   def admin_abilities
