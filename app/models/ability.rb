@@ -24,15 +24,15 @@ class Ability
     guest_abilities
 
     can :create, [Question, Answer, Comment]
-    can :manage_own, [Question, Answer], user: user
-    can :destroy, Comment, user: user
+    can :manage_own, [Question, Answer], user_id: user.id
+    can :destroy, Comment, user_id: user.id
 
     can :vote, [Question, Answer] do |resource|
-      resource.user != user
+      resource.user_id != user.id
     end
 
     can :accept, Answer do |answer|
-      answer.question.user == user
+      answer.question.user_id == user.id
     end
   end
 
