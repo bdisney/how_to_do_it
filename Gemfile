@@ -11,6 +11,7 @@ gem 'bootstrap-sass', '~>3.3'
 gem 'font-awesome-rails'
 gem 'devise'
 gem 'cancancan'
+gem 'doorkeeper'
 gem 'gravatar_image_tag'
 gem 'carrierwave'
 gem 'remotipart'
@@ -60,6 +61,10 @@ group :development, :test do
   gem 'capybara', '~> 2.10', '>= 2.10.1'
   gem 'capybara-webkit'
   gem 'database_cleaner'
+end
+
+group :test do
+  gem 'json_spec'
 end
 
 group :development do
