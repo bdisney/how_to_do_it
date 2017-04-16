@@ -107,4 +107,66 @@ describe 'Questions API' do
       end
     end
   end
+
+  describe 'POST /create' do
+    context 'unauthorized' do
+      context 'when request does not have access_token' do
+        it 'responds with code 401' do
+          post '/api/v1/questions', params: { format: :json, question: attributes_for(:question) }
+          expect(response.status).to eq(401)
+        end
+
+        it 'does not save question to db' do
+          expect{ post '/api/v1/questions', params: { format: :json, question: attributes_for(:question) } }
+              .to_not change(Question, :count)
+        end
+      end
+
+      context 'when access_token is invalid' do
+        it 'responds with code 401' do
+          post '/api/v1/questions', params: { format: :json, access_token: '123456', question: attributes_for(:question) }
+          expect(response.status).to eq(401)
+        end
+
+        it 'does not save question to db' do
+          expect { post '/api/v1/questions',
+                        params: { format: :json, access_token: '123456',
+                                  question: attributes_for(:question) } }.to_not change(Question, :count)
+        end
+      end
+    end
+
+    context 'authorized' do
+      let(:user) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      context 'with valid attributes' do
+        it 'responds with code 201' do
+          post '/api/v1/questions', params: { format: :json, access_token: access_token.token,
+                                              question: attributes_for(:question) }
+          expect(response.status).to eq(201)
+        end
+
+        it 'saves new question to db' do
+          expect { post '/api/v1/questions',
+                        params: { format: :json, access_token: access_token.token,
+                                  question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
+        end
+      end
+
+      context 'with invalid attributes' do
+        it 'responds with code 422' do
+          post '/api/v1/questions', params: { format: :json, access_token: access_token.token,
+                                              question: attributes_for(:invalid_question) }
+          expect(response.status).to eq(422)
+        end
+
+        it 'does not save new question to db' do
+          expect { post '/api/v1/questions',
+                        params: { format: :json, access_token: access_token.token,
+                                  question: attributes_for(:invalid_question) } }.to_not change(user.questions, :count)
+        end
+      end
+    end
+  end
 end
