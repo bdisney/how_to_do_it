@@ -16,6 +16,6 @@ class ApplicationController < ActionController::Base
   check_authorization unless: :to_skip?
 
   def to_skip?
-    :devise_controller? || is_a?(::PagesController)
+    devise_controller? || is_a?(HighVoltage::PagesController)
   end
 end
