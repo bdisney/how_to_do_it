@@ -1,67 +1,39 @@
 require 'rails_helper'
 
 describe 'Profile API' do
-  describe 'GET /me' do
-    context 'unauthorized' do
-      it 'responds with code 401 if request does not have access_token' do
-        get '/api/v1/profiles/me', params: { format: :json }
-        expect(response.status).to eq(401)
-      end
+  let(:me) { create(:user) }
+  let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-      it 'responds with code 401 if access_token is invalid' do
-        get '/api/v1/profiles/me', params: { format: :json, access_token: '123456' }
-        expect(response.status).to eq(401)
+  describe 'GET /me' do
+    let(:http_method) { :get }
+    let(:path) { '/api/v1/profiles/me' }
+
+    it_should_behave_like 'API authorized'
+
+    before { get path, params: { format: :json, access_token: access_token.token } }
+
+    %w(id email created_at updated_at admin).each do |attr|
+      it "contains attribute #{attr}" do
+        expect(response.body).to be_json_eql(me.send(attr.to_sym).to_json).at_path(attr)
       end
     end
 
-    context 'authorized' do
-      let(:me) { create (:user) }
-      let(:access_token) { create(:access_token, resource_owner_id: me.id) }
-
-      before { get '/api/v1/profiles/me', params: { format: :json, access_token: access_token.token } }
-
-      it 'responds with code 200' do
-        expect(response.status).to eq(200)
-      end
-
-      %w(id email created_at updated_at admin).each do |attr|
-        it "contains attribute #{attr}" do
-          expect(response.body).to be_json_eql(me.send(attr.to_sym).to_json).at_path(attr)
-        end
-      end
-
-      %w(password encrypted_password).each do |attr|
-        it "does not contain attribute #{attr}" do
-          expect(response.body).to_not have_json_path(attr)
-        end
+    %w(password encrypted_password).each do |attr|
+      it "does not contain attribute #{attr}" do
+        expect(response.body).to_not have_json_path(attr)
       end
     end
   end
 
   describe 'GET /index' do
-    context 'unauthorized' do
-      it 'responds with code 401 if request does not have access_token' do
-        get '/api/v1/profiles', params: { format: :json }
-        expect(response.status).to eq(401)
-      end
+    let(:http_method) { :get }
+    let(:path) { '/api/v1/profiles' }
 
-      it 'responds with code 401 if access_token is invalid' do
-        get '/api/v1/profiles', params: { format: :json, access_token: '123456' }
-        expect(response.status).to eq(401)
-      end
-    end
-  end
+    it_should_behave_like 'API authorized'
 
-  context 'authorized' do
-    let(:me) { create(:user) }
     let!(:users) { create_list(:user, 2) }
-    let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-    before { get '/api/v1/profiles', params: { format: :json, access_token: access_token.token } }
-
-    it 'responds with code 200' do
-      expect(response.status).to eq(200)
-    end
+    before { get path, params: { format: :json, access_token: access_token.token } }
 
     it 'returns all users but me' do
       expect(response.body).to have_json_size(2)
