@@ -36,8 +36,11 @@ describe 'Answers API' do
 
     it_should_behave_like 'API authorized'
 
-    let!(:attachment) { create(:attachment, attachable: answer) }
-    let!(:comment) { create(:comment, commentable: answer) }
+    let(:attachable) { answer }
+    it_should_behave_like 'API attached'
+
+    let(:commentable) { answer }
+    it_should_behave_like 'API commented'
 
     context 'authorized' do
       before { get path, params: { format: :json, access_token: access_token.token } }
@@ -45,29 +48,6 @@ describe 'Answers API' do
       %w(id body created_at updated_at user_id).each do |attr|
         it "contains attribute #{attr}" do
           expect(response.body).to be_json_eql(answer.send(attr.to_sym).to_json).at_path("answer/#{attr}")
-        end
-      end
-
-      it 'contains attachments list' do
-        expect(response.body).to have_json_size(1).at_path('answer/attachments')
-      end
-
-      it 'each attachment contains attribute name' do
-        expect(response.body).to be_json_eql('pic2.jpg'.to_json).at_path('answer/attachments/0/name')
-      end
-
-      it 'each attachment contains attribute src' do
-        expect(response.body).to be_json_eql("/uploads/attachment/file/#{attachment.id}/pic2.jpg".to_json)
-                                     .at_path('answer/attachments/0/src')
-      end
-
-      it 'contains comments list' do
-        expect(response.body).to have_json_size(1).at_path('answer/comments')
-      end
-
-      %w(id body created_at updated_at).each do |attr|
-        it "each comment contains attribute #{attr}" do
-          expect(response.body).to be_json_eql(comment.send(attr.to_sym).to_json).at_path("answer/comments/0/#{attr}")
         end
       end
     end

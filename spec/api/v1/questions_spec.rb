@@ -31,14 +31,18 @@ describe 'Questions API' do
 
   describe 'GET /show' do
     let!(:question) { create(:question) }
+
     let(:http_method) { :get }
     let(:path) { "/api/v1/questions/#{question.id}" }
-
     it_should_behave_like 'API authorized'
 
+    let(:attachable) { question }
+    it_should_behave_like 'API attached'
+
+    let(:commentable) { question }
+    it_should_behave_like 'API commented'
+
     let!(:answer) { create(:answer, question: question) }
-    let!(:attachment) { create(:attachment, attachable: question) }
-    let!(:comment) { create(:comment, commentable: question) }
 
     before { get path, params: { format: :json, access_token: access_token.token } }
 
@@ -55,29 +59,6 @@ describe 'Questions API' do
     %w(id body created_at updated_at).each do |attr|
       it "each answer contains attribute #{attr}" do
         expect(response.body).to be_json_eql(answer.send(attr.to_sym).to_json).at_path("question/answers/0/#{attr}")
-      end
-    end
-
-    it 'contains attachments list' do
-      expect(response.body).to have_json_size(1).at_path('question/attachments')
-    end
-
-    it 'each attachment contains attribute name' do
-      expect(response.body).to be_json_eql('pic2.jpg'.to_json).at_path('question/attachments/0/name')
-    end
-
-    it 'each attachment contains attribute src' do
-      expect(response.body).to be_json_eql("/uploads/attachment/file/#{attachment.id}/pic2.jpg".to_json)
-                                   .at_path('question/attachments/0/src')
-    end
-
-    it 'contains comments list' do
-      expect(response.body).to have_json_size(1).at_path('question/comments')
-    end
-
-    %w(id body created_at updated_at).each do |attr|
-      it "each comment contains attribute #{attr}" do
-        expect(response.body).to be_json_eql(comment.send(attr.to_sym).to_json).at_path("question/comments/0/#{attr}")
       end
     end
   end
