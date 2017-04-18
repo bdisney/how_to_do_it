@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
+  it_should_behave_like 'attachable'
   it_should_behave_like 'votable'
   it_should_behave_like 'commentable'
   it { should belong_to(:question) }
   it { should belong_to(:user) }
-  it { should have_many(:attachments).dependent(:destroy) }
   it { should validate_presence_of(:body) }
   it { should validate_length_of(:body).is_at_least(5) }
-  it { should accept_nested_attributes_for(:attachments).allow_destroy(true) }
 
   context 'when answer accepted' do
     subject { create(:accepted_answer) }
