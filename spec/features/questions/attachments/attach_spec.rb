@@ -8,22 +8,15 @@ feature 'Attach files to question', %q{
 
   given(:user) { create(:user) }
 
-  background do
-      sign_in(user)
-      visit new_question_path
+  it_should_behave_like 'add attachments ability' do
+    let(:path) { new_question_path }
+    let(:container) { '.question' }
+    let(:btn) { 'Add question' }
+
+    def fill_form
+      data = attributes_for(:question)
+      fill_in 'Title', with: data[:title]
+      fill_in 'Body', with: data[:body]
     end
-
-  scenario 'Authenticated user creates question with attachments', js: true do
-    data = attributes_for(:question)
-    fill_in 'Title', with: data[:title]
-    fill_in 'Body', with: data[:body]
-    click_on '+ Add file'
-    all('input[type="file"]').first.set "#{Rails.root}/spec/files/file_01.txt"
-    click_on '+ Add file'
-    all('input[type="file"]').last.set "#{Rails.root}/spec/files/file_02.txt"
-    click_on 'Add question'
-
-    expect(page).to have_link 'file_01.txt', href: /uploads\/attachment\/file\/\d\/file_01\.txt/
-    expect(page).to have_link 'file_02.txt', href: /uploads\/attachment\/file\/\d\/file_02\.txt/
   end
 end

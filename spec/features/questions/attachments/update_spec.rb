@@ -7,40 +7,10 @@ feature 'Change attached files', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: user) }
-  given!(:attachment) { create(:attachment, attachable: question) }
+  given(:attachable) { create(:question, user: user) }
 
-  background do
-      sign_in(user)
-      visit question_path(question)
-      within '.button-bar' do
-        click_on 'Edit'
-      end
-  end
-
-  scenario 'Author of question removes attachment', js: true do
-    within '.question' do
-      expect(page).to have_link 'pic2.jpg', href: /uploads\/attachment\/file\/\d\/pic2\.jpg/
-
-      within '.nested-fields' do
-        first('.attachment-remove').click
-      end
-      click_on 'Update question'
-      wait_for_ajax
-
-      expect(page).to_not have_link 'pic2.jpg', href: /uploads\/attachment\/file\/\d\/pic2\.jpg/
-    end
-  end
-
-  scenario 'Author of question attach additional file', js: true do
-    within '.question' do
-      click_on ' Add file'
-      first('input[type="file"]').set "#{Rails.root}/spec/files/pic1.jpg"
-      click_on 'Update question'
-      wait_for_ajax
-
-      expect(page).to have_link 'pic2.jpg', href: /uploads\/attachment\/file\/\d\/pic2\.jpg/
-      expect(page).to have_link 'pic1.jpg', href: /uploads\/attachment\/file\/\d\/pic1\.jpg/
-    end
+  it_should_behave_like 'edit attachments ability' do
+    let(:path) { question_path(attachable) }
+    let(:trigger_container) { '.button-bar' }
   end
 end
